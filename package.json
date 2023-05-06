@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@types/sequelize": "^4.28.15"
+  }
+}
