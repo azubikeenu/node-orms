@@ -1,0 +1,31 @@
+version: '3.9'
+services:
+  postgres-main:
+    image: postgres
+    container_name: auth-backend-db
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-userpass}
+      - POSTGRES_USER=${DB_USERNAME:-admin}
+      - POSTGRES_DB=${DB_NAME:-auth_backend}
+    ports:
+      - ${DB_PORT:-5432}:5432
+    volumes:
+      - ./docker-volume/pg:/var/lib/postgresql/data
+  
+    restart: unless-stopped 
+
+  postgres-test:
+    image: postgres
+    container_name: auth-backend-test-db
+    env_file:
+      - .env.test
+    environment:
+      - POSTGRES_PASSWORD=${DB_TEST_PASSWORD:-userpass}
+      - POSTGRES_DB=${DB_TEST_NAME:-auth_backend_test}
+    ports:
+      - ${DB_TEST_PORT:-5433}:5432
+
+    restart: unless-stopped 
+
