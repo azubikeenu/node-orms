@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/index.js",
-    "debug": "npm run dev -- --inspect",
-    "test": "jest --runInBand",
-    "test:watch": "npm test -- --watch"
+    "dev": " cross-env NODE_ENV=development nodemon --exec babel-node src/index.js",
+    "debug": "cross-env NODE_ENV=development npm run dev -- --inspect",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
+    "test:watch": "cross-env NODE_ENV=test npm test -- --watch"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +25,7 @@
   "dependencies": {
     "bcrypt": "^5.1.0",
     "cls-hooked": "^4.2.2",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
