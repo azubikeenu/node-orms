@@ -8,7 +8,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD:-userpass}
       - POSTGRES_USER=${DB_USERNAME:-admin}
-      - POSTGRES_DB=${DB_NAME:-auth_backend}
+      - POSTGRES_DB=${DB_NAME:-auth_db}
     ports:
       - ${DB_PORT:-5432}:5432
     volumes:
@@ -23,9 +23,25 @@ services:
       - .env.test
     environment:
       - POSTGRES_PASSWORD=${DB_TEST_PASSWORD:-userpass}
-      - POSTGRES_DB=${DB_TEST_NAME:-auth_backend_test}
+      - POSTGRES_DB=${DB_TEST_NAME:-auth_db_test}
     ports:
       - ${DB_TEST_PORT:-5433}:5432
 
     restart: unless-stopped 
+    
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@richard.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      
+    volumes:
+      - ./docker-volume/pgadmin:/var/lib/pgadmin
+    ports:
+      - 9000:80
+
+
+
+  
 

@@ -14,7 +14,6 @@ export default (sequelize) => {
     },
     {
       sequelize,
-      modelName: 'RefreshToken',
     }
   );
   return RefreshToken;

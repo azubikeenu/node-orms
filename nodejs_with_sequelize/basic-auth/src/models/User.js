@@ -65,7 +65,6 @@ export default (sequelize) => {
     },
     {
       sequelize,
-      modelName: 'User',
       indexes: [
         {
           unique: true,
