@@ -140,6 +140,7 @@ Desktop.ini
 .eslintcache
 /.idea/
 
+.env
 
 #########################
 # DOCKER VOLUMES 

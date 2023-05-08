@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize';
 import { registerModels } from '../models';
+import cls from 'cls-hooked';
 
 class Database {
   constructor(dbConfig, environment) {
@@ -23,6 +24,12 @@ class Database {
   }
 
   async connect() {
+    // set up namespace for transactions
+    const namespace = cls.createNamespace('transaction_namespace');
+
+    // use cls
+    Sequelize.useCLS(namespace);
+
     const uri = this.getConnectionString();
 
     // Create a connection
