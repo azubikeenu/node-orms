@@ -1,4 +1,4 @@
-import TestUtils from '../utils/helpers';
+import TestUtils from '../helpers';
 import models from '../../src/models';
 
 describe('User', () => {
