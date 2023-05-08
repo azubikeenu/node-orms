@@ -9,7 +9,8 @@ import dbConfig from './config/database';
   try {
     const db = new Database(dbConfig, environment.nodeEnv);
     await db.connect();
-    // import the applicatiion
+    // import the application
+    // we use require here because the database needs to be connected and models instantiated before the app loads
     const App = require('./app').default;
     const app = new App();
     app.listen();

@@ -30,22 +30,23 @@ router.post(
       // Create Roles
       if (roles && Array.isArray(roles)) {
         const rolesToSave = [];
-        roles.forEach(async (role) => {
-          const newRole = await Role.create({ role });
-          rolesToSave(newRole);
-        });
 
+        for (let role of roles) {
+          const newRole = await Role.create({ role });
+          rolesToSave.push(newRole);
+        }
         // Add roles to user
         await newUser.addRoles(rolesToSave);
-        return res.status(201).json({
-          success: true,
-          message: 'User successfully created',
-          data: {
-            accessToken,
-            refreshToken,
-          },
-        });
       }
+
+      return res.status(201).json({
+        success: true,
+        message: 'User successfully created',
+        data: {
+          accessToken,
+          refreshToken,
+        },
+      });
     } catch (err) {
       return res.status(500).json({ success: false, message: `Error creating user : ${err?.message}` });
     }
