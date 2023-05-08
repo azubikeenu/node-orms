@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": " cross-env NODE_ENV=development nodemon --exec babel-node src/index.js",
+    "dev": " cross-env NODE_ENV=development nodemon --exec babel-node src/server.js",
     "debug": "cross-env NODE_ENV=development npm run dev -- --inspect",
     "test": "cross-env NODE_ENV=test jest --runInBand",
     "test:watch": "cross-env NODE_ENV=test npm test -- --watch"
