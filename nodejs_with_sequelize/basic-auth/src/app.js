@@ -2,6 +2,7 @@ import express from 'express';
 import logger from 'morgan';
 import environment from './config/env';
 import errorsMiddleware from './middlewares/errors.middleware';
+import { v1Routes } from './controllers';
 
 class App {
   constructor() {
@@ -14,6 +15,7 @@ class App {
   }
 
   setRoutes() {
+    this.app.use('api/v1', v1Routes);
     this.app.use(errorsMiddleware);
   }
 
