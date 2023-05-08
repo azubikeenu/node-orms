@@ -15,6 +15,7 @@ export default (sequelize) => {
     },
     {
       sequelize,
+      modelName: 'Role',
     }
   );
   return Role;
