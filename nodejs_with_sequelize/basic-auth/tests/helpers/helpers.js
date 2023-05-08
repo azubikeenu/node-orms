@@ -18,6 +18,11 @@ class TestUtils {
   static async syncDb() {
     await db.sync();
   }
+
+  static getApp() {
+    const App = require('../../src/app').default;
+    return new App().getApp();
+  }
 }
 
 export default TestUtils;

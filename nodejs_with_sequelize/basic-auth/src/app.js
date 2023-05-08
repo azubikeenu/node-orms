@@ -22,6 +22,7 @@ class App {
   getApp() {
     return this.app;
   }
+
   listen() {
     const { port } = environment;
     this.app.listen(port, () => {
