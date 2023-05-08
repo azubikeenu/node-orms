@@ -8,7 +8,10 @@ import environment from '../config/env';
 
 export default (sequelize) => {
   class User extends Model {
-    static associate(models) {}
+    static associate(models) {
+      User.hasMany(models['Role']);
+      User.hasOne(models['RefreshToken']);
+    }
 
     static async hashPassword(password) {
       return bcrypt.hash(password, environment.saltRounds);
@@ -62,6 +65,7 @@ export default (sequelize) => {
     },
     {
       sequelize,
+      modelName: 'User',
       indexes: [
         {
           unique: true,
