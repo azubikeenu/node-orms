@@ -26,10 +26,9 @@ function requireAuth(tokenType = 'accessToken') {
         case 'accessToken':
         default:
           jwt = JwtUtils.verifyAccessToken(token);
-          req.body.jwt = jwt;
-
-          next();
       }
+      req.body.jwt = jwt;
+      return next();
     } catch (err) {
       return res.status(401).send({ success: false, message: 'Invalid token' });
     }
