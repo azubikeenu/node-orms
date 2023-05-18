@@ -8,14 +8,14 @@ import asyncWrapper from '../../utils/asyncWrapper.utils';
 
 const router = Router();
 
-const { User } = models;
+const { User, RefreshToken } = models;
 
 router.post(
   '/login',
   asyncWrapper(async (req, res) => {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({ where: { email }, include: RefreshToken });
 
     if (!user || !(await User.comparePassword(password, user.password)))
       return res.status(400).json({ success: false, messge: 'Invalid login credentials' });
@@ -36,6 +36,7 @@ router.post(
       } else {
         // if the refresh token is empty or null set the newly created refreshToken as the presisted token prop
         user.RefreshToken.token = refreshToken;
+
         // save the refreshToken
         await user.RefreshToken.save();
       }

@@ -7,6 +7,9 @@
  * belongsTo ==> this is a relationship applied on the child table , ie where the foriegn key resides
  * at adds helper methods to act on the parent getParent setParent
  *
+ * to include a child model
+ *  Model.findOne({where : {email}},include : ChildModel)
+ *
  */
 
 const Sequelize = require('sequelize');

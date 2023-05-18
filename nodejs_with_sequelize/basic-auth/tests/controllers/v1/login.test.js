@@ -59,4 +59,39 @@ describe('Login', () => {
     });
     expect(body.data.refreshToken).toEqual(response.data.refreshToken);
   });
+
+  it(`Should create a new refresh token if no refresh token is associated to the user`, async () => {
+    const { RefreshToken } = models;
+    await RefreshToken.destroy({ where: {} });
+
+    let refreshTokens = await RefreshToken.findAll();
+
+    expect(refreshTokens.length).toEqual(0);
+
+    await request(app).post('/api/v1/login').send({
+      email: TestUtils.email,
+      password: TestUtils.password,
+    });
+
+    refreshTokens = await RefreshToken.findAll();
+    expect(refreshTokens.length).toEqual(1);
+  });
+
+  it(`Should update the refresh token if it has no token value `, async () => {
+    const { RefreshToken, User } = models;
+    const resultSet = await RefreshToken.update(
+      { token: null },
+      { where: { token: response.data.refreshToken }, returning: true, raw: true }
+    );
+
+    const updatedToken = resultSet[1][0];
+    expect(updatedToken.token).toEqual(null);
+
+    await request(app).post('/api/v1/login').send({
+      email: TestUtils.email,
+      password: TestUtils.password,
+    });
+    const user = await User.findOne({ where: { email: TestUtils.email }, include: RefreshToken });
+    expect(user.RefreshToken.token).toEqual(expect.any(String));
+  });
 });

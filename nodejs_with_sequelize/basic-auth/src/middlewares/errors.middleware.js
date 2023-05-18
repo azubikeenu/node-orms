@@ -5,7 +5,7 @@ function errorsMiddleware(error, req, res, next) {
 
   let errorMessage = { message };
 
-  if (environment.nodeEnv === 'development') {
+  if (environment.nodeEnv === 'development' || 'test') {
     errorMessage = { message, stack };
   }
 

@@ -19,46 +19,42 @@ router.post(
 
     if (foundUser) return res.status(409).json({ success: false, message: 'User already exists' });
 
-    try {
-      const result = await sequelize.transaction(async () => {
-        const newUser = await User.create({ email, password });
+    const result = await sequelize.transaction(async () => {
+      const newUser = await User.create({ email, password });
 
-        const payload = { email };
+      const payload = { email };
 
-        // Generate an access token
-        const accessToken = JwtUtils.generateAccessToken(payload);
-        // Generate a refresh token
-        const refreshToken = JwtUtils.generateRefreshToken(payload);
-        // Create a refresh token
-        await newUser.createRefreshToken({ token: refreshToken });
+      // Generate an access token
+      const accessToken = JwtUtils.generateAccessToken(payload);
+      // Generate a refresh token
+      const refreshToken = JwtUtils.generateRefreshToken(payload);
+      // Create a refresh token
+      await newUser.createRefreshToken({ token: refreshToken });
 
-        // Create Roles
-        if (roles && Array.isArray(roles)) {
-          const rolesToSave = [];
+      // Create Roles
+      if (roles && Array.isArray(roles)) {
+        const rolesToSave = [];
 
-          for (let role of roles) {
-            const newRole = await Role.create({ role });
-            rolesToSave.push(newRole);
-          }
-          // Add roles to user
-          await newUser.addRoles(rolesToSave);
+        for (let role of roles) {
+          const newRole = await Role.create({ role });
+          rolesToSave.push(newRole);
         }
-        return { accessToken, refreshToken };
-      });
+        // Add roles to user
+        await newUser.addRoles(rolesToSave);
+      }
+      return { accessToken, refreshToken };
+    });
 
-      const { accessToken, refreshToken } = result;
+    const { accessToken, refreshToken } = result;
 
-      return res.status(201).json({
-        success: true,
-        message: 'User successfully created',
-        data: {
-          accessToken,
-          refreshToken,
-        },
-      });
-    } catch (err) {
-      return res.status(500).json({ success: false, message: `Error creating user : ${err?.message}` });
-    }
+    return res.status(201).json({
+      success: true,
+      message: 'User successfully created',
+      data: {
+        accessToken,
+        refreshToken,
+      },
+    });
   })
 );
 

@@ -101,9 +101,10 @@ describe('Token', () => {
         .set('Authorization', `Bearer ${token}`)
         .send()
         .expect(500);
-      console.log(body);
+
       expect(body.success).toBeFalsy();
       expect(body.error.message).toEqual('Something happened');
+      expect(body.error.stack).toBeDefined();
     });
   });
 });
