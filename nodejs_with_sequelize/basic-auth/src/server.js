@@ -1,4 +1,5 @@
 import './config';
+
 import Database from './database';
 
 import environment from './config/env';

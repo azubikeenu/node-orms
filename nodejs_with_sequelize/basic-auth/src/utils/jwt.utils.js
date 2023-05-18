@@ -9,8 +9,10 @@ class JwtUtils {
     });
   }
 
-  static generateRefreshToken(payload) {
-    return jwt.sign(payload, environment.jwtRefreshTokenSecret);
+  static generateRefreshToken(payload, options) {
+    return jwt.sign(payload, environment.jwtRefreshTokenSecret, {
+      ...(options && options),
+    });
   }
 
   static verifyAccessToken(accessToken) {

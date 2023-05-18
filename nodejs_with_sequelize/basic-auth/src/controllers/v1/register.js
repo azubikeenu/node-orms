@@ -16,12 +16,15 @@ router.post(
     const { email, password, roles } = req.body;
     // Verify if there is no existing user
     const foundUser = await User.findOne({ where: { email } });
+
     if (foundUser) return res.status(409).json({ success: false, message: 'User already exists' });
 
     try {
       const result = await sequelize.transaction(async () => {
         const newUser = await User.create({ email, password });
+
         const payload = { email };
+
         // Generate an access token
         const accessToken = JwtUtils.generateAccessToken(payload);
         // Generate a refresh token

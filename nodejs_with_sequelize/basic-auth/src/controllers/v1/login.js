@@ -5,17 +5,18 @@ import models from '../../models';
 import JwtUtils from '../../utils/jwt.utils';
 
 import asyncWrapper from '../../utils/asyncWrapper.utils';
-import RefreshToken from '../../models/RefreshToken';
 
 const router = Router();
 
-const { User, Role, sequelize } = models;
+const { User } = models;
 
 router.post(
   '/login',
   asyncWrapper(async (req, res) => {
     const { email, password } = req.body;
+
     const user = await User.findOne({ where: { email } });
+
     if (!user || !(await User.comparePasswords(password, user.password)))
       return res.status(400).json({ success: false, messge: 'Invalid login credentials' });
 
@@ -26,6 +27,7 @@ router.post(
     const savedRefreshToken = await user.getRefreshToken();
 
     let refreshToken;
+
     if (!savedRefreshToken || !savedRefreshToken.token) {
       refreshToken = JwtUtils.generateRefreshToken(payload);
       if (!savedRefreshToken) {

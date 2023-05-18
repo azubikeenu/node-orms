@@ -39,6 +39,7 @@ class Database {
 
     // Check Connection
     await this.connection.authenticate({ logging: false });
+
     if (!this.isTestEnvironment) console.log(`Connection to the database was successful`);
 
     // Register Models

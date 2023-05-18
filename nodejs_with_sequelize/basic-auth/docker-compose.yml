@@ -33,8 +33,8 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@richard.com
-      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-admin@richard.com}
+      - PGADMIN_DEFAULT_PASSWORD=${PGDADMIN_DEFAULT_PASSWORD:-admin}
       
     volumes:
       - ./docker-volume/pgadmin:/var/lib/pgadmin

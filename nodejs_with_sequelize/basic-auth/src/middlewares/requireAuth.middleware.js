@@ -16,6 +16,7 @@ function requireAuth(tokenType = 'accessToken') {
       return res.status(401).send({ success: false, message: 'Auth header not found' });
     }
 
+    // verify the token
     try {
       let jwt;
       switch (tokenType) {
@@ -26,6 +27,7 @@ function requireAuth(tokenType = 'accessToken') {
         default:
           jwt = JwtUtils.verifyAccessToken(token);
           req.body.jwt = jwt;
+
           next();
       }
     } catch (err) {
@@ -34,4 +36,4 @@ function requireAuth(tokenType = 'accessToken') {
   };
 }
 
-export default JwtUtils;
+export default requireAuth;
