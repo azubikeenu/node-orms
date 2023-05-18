@@ -20,7 +20,7 @@ class JwtUtils {
   }
 
   static verifyRefreshToken(refreshToken) {
-    return jwt.verify(refreshToken, environment.jwtAccessTokenSecret);
+    return jwt.verify(refreshToken, environment.jwtRefreshTokenSecret);
   }
 }
 
