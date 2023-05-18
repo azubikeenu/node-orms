@@ -62,7 +62,7 @@ describe('Token', () => {
     expect(body.data.accessToken).toEqual(expect.any(String));
   });
 
-  it(`Should return 401 if there is no token doesnt exist`, async () => {
+  it(`Should return 401 if there is no token property`, async () => {
     const { RefreshToken } = models;
     const refreshToken = await RefreshToken.findOne({ where: { token: userResponse.data.refreshToken } });
     refreshToken.token = null;
@@ -77,7 +77,7 @@ describe('Token', () => {
     expect(body.message).toEqual('Please login to continue');
   });
 
-  it(`Should return 401 if there is no token property in  refresh token`, async () => {
+  it(`Should return 401 if token does not exist`, async () => {
     const { RefreshToken } = models;
     await RefreshToken.destroy({ where: { token: userResponse.data.refreshToken } });
 
