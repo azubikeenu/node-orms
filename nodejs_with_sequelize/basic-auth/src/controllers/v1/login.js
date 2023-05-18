@@ -17,7 +17,7 @@ router.post(
 
     const user = await User.findOne({ where: { email } });
 
-    if (!user || !(await User.comparePasswords(password, user.password)))
+    if (!user || !(await User.comparePassword(password, user.password)))
       return res.status(400).json({ success: false, messge: 'Invalid login credentials' });
 
     // Generate access and request tokens

@@ -6,6 +6,9 @@ import request from 'supertest';
 let db;
 
 class TestUtils {
+  static email = 'richard@gmail.com';
+  static password = 'userpass';
+
   static async startDataBase() {
     db = new Database(dbConfig, 'test');
     await db.connect();
@@ -27,13 +30,13 @@ class TestUtils {
 
   static async registerNewUser(options = {}) {
     const {
-      email = 'richard@gmail.com',
-      password = 'test123#',
+      email = TestUtils.email,
+      password = TestUtils.password,
       endpoint = '/api/v1/register',
       firstName = 'Richard',
       lastName = 'Enu',
     } = options;
-    const { body } = (await request(TestUtils.getApp()).post(endpoint)).body({
+    const { body } = await request(TestUtils.getApp()).post(endpoint).send({
       email,
       password,
       firstName,

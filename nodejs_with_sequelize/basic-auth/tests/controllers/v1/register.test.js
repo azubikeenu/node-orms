@@ -46,7 +46,7 @@ describe('Register', () => {
     expect(users[0]?.Roles[1].role).toEqual('user');
   });
 
-  it(`Should not create a new user of the email already exists`, async () => {
+  it(`Should not create a new user of the email already exists and return a statusCode of 409`, async () => {
     await request(app)
       .post(`/api/v1/register`)
       .send({ email: 'test@gmail.com', password: 'userpass', roles: ['admin', 'user'] });
