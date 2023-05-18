@@ -1,7 +1,7 @@
 import request from 'supertest';
 import TestUtils from '../../helpers/helpers';
 import models from '../../../src/models';
-
+import JwtUtils from '../../../src/utils/jwt.utils';
 describe('Token', () => {
   let app;
   let userResponse;
@@ -86,5 +86,24 @@ describe('Token', () => {
       .set('Authorization', `Bearer ${userResponse.data.refreshToken}`)
       .send()
       .expect(401);
+  });
+
+  describe('errors Middleware', () => {
+    it('should throw a 500 error', async () => {
+      const jwtSpy = jest.spyOn(JwtUtils, 'generateAccessToken');
+      jwtSpy.mockImplementation(() => {
+        throw new Error('Something happened');
+      });
+      const token = userResponse.data.refreshToken;
+
+      const { body } = await request(app)
+        .post('/api/v1/token')
+        .set('Authorization', `Bearer ${token}`)
+        .send()
+        .expect(500);
+      console.log(body);
+      expect(body.success).toBeFalsy();
+      expect(body.error.message).toEqual('Something happened');
+    });
   });
 });

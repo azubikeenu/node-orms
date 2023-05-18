@@ -10,7 +10,10 @@ export default (sequelize) => {
   class User extends Model {
     static associate(models) {
       User.hasMany(models['Role']);
-      User.hasOne(models['RefreshToken']);
+
+      User.hasOne(models['RefreshToken'], {
+        onDelete: 'CASCADE',
+      });
     }
 
     static async hashPassword(password) {
