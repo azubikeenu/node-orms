@@ -107,12 +107,24 @@ export default (sequelize) => {
           fields: ['email'],
         },
       ],
+      defaultScope: {
+        attributes: { exclude: ['password'] },
+      },
+      scopes: {
+        withPassword: {
+          attributes: { include: ['password'] },
+        },
+      },
     }
   );
   User.beforeSave(async (user, _) => {
     const hashedPassword = await User.hashPassword(user.password);
     user.password = hashedPassword;
   });
+
+  User.prototype.comparePassword = async (password) => {
+    return bcrypt.compare(password, this.password);
+  };
 
   return User;
 };
