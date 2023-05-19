@@ -9,7 +9,7 @@
     "test": "cross-env NODE_ENV=test jest --runInBand",
     "test:watch": "npm test -- --watch",
     "test:coverage": "npm test --  --coverage ",
-    "db:migrate" : " npx sequelize-cli db:migrate  --migrations-path src/database/migrations "
+    "db:migrate" : "npx sequelize-cli db:migrate"
   },
   "keywords": [],
   "author": "",
