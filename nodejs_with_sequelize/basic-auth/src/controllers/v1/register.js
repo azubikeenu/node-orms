@@ -8,7 +8,7 @@ import asyncWrapper from '../../utils/asyncWrapper.utils';
 
 const router = Router();
 
-const { User, Role, sequelize } = models;
+const { User, Role, sequelize, RefreshToken } = models;
 
 router.post(
   '/register',
@@ -20,28 +20,29 @@ router.post(
     if (foundUser) return res.status(409).json({ success: false, message: 'User already exists' });
 
     const result = await sequelize.transaction(async () => {
-      const newUser = await User.create({ email, password });
-
       const payload = { email };
 
       // Generate an access token
       const accessToken = JwtUtils.generateAccessToken(payload);
       // Generate a refresh token
       const refreshToken = JwtUtils.generateRefreshToken(payload);
-      // Create a refresh token
-      await newUser.createRefreshToken({ token: refreshToken });
-
       // Create Roles
+      let rolesToSave = [];
       if (roles && Array.isArray(roles)) {
-        const rolesToSave = [];
-
-        for (let role of roles) {
-          const newRole = await Role.create({ role });
-          rolesToSave.push(newRole);
-        }
-        // Add roles to user
-        await newUser.addRoles(rolesToSave);
+        rolesToSave = roles.map((role) => ({ role }));
       }
+
+      //create user with assc
+
+      await User.create(
+        {
+          email,
+          password,
+          Roles: rolesToSave,
+          RefreshToken: { token: refreshToken },
+        },
+        { include: [Role, RefreshToken] }
+      );
       return { accessToken, refreshToken };
     });
 

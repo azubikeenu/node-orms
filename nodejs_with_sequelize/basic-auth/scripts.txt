@@ -3,3 +3,4 @@ npx sequelize-cli migration:generate --name [name_of_migration_file]
 npx sequelize-cli db:migrate -env [enviroment]
 
  npx sequelize-cli db:migrate:undo:all --env [environment]        
+ npx sequelize-cli db:migrate:status --env [environment]        

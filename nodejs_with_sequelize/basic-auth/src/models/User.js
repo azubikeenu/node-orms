@@ -42,7 +42,7 @@ export default (sequelize) => {
         allowNull: false,
       },
 
-      username: {
+      userName: {
         type: DataTypes.STRING(50),
         unique: true,
       },
