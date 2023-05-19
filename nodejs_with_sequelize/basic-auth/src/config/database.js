@@ -5,6 +5,7 @@ module.exports = {
     port: parseInt(process.env.DB_PORT) || 5432,
     host: process.env.DB_HOST || '127.0.0.1',
     database: process.env.DB_NAME || 'auth_db',
+    dialect: 'postgres',
   },
 
   test: {
@@ -13,5 +14,6 @@ module.exports = {
     password: process.env.DB_TEST_PASSWORD || 'userpass',
     host: process.env.DB_TEST_HOST || '127.0.0.1',
     database: process.env.DB_TEST_NAME || 'auth_db_test',
+    dialect: 'postgres',
   },
 };
