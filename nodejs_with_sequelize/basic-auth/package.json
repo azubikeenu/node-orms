@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build" : "babel ./src --out-dir ./build",
+    "start" : "node ./build/server.js",
     "dev": " cross-env NODE_ENV=development nodemon --exec babel-node src/server.js",
     "debug": " npm run dev -- --inspect",
     "test": "cross-env NODE_ENV=test jest --runInBand",
