@@ -6,12 +6,13 @@ import bcrypt from 'bcrypt';
 
 import environment from '../config/env';
 
+import JwtUtils from '../utils/jwt.utils';
+
 export default (sequelize) => {
   class User extends Model {
     static associate(models) {
-      User.hasMany(models['Role']);
-
-      User.hasOne(models['RefreshToken'], {
+      User.Roles = User.hasMany(models['Role']);
+      User.RefreshToken = User.hasOne(models['RefreshToken'], {
         onDelete: 'CASCADE',
       });
     }
@@ -23,7 +24,38 @@ export default (sequelize) => {
     static async comparePassword(password, hashedPassword) {
       return bcrypt.compare(password, hashedPassword);
     }
+
+    static async createUser({ email, password, roles }) {
+      const result = await sequelize.transaction(async () => {
+        const payload = { email };
+
+        // Generate an access token
+        const accessToken = JwtUtils.generateAccessToken(payload);
+        // Generate a refresh token
+        const refreshToken = JwtUtils.generateRefreshToken(payload);
+        // Create Roles
+        let rolesToSave = [];
+        if (roles && Array.isArray(roles)) {
+          rolesToSave = roles.map((role) => ({ role }));
+        }
+
+        //create user with assc
+        await User.create(
+          {
+            email,
+            password,
+            Roles: rolesToSave,
+            RefreshToken: { token: refreshToken },
+          },
+          { include: [User.Roles, User.RefreshToken] }
+        );
+        return { accessToken, refreshToken };
+      });
+
+      return result;
+    }
   }
+
   User.init(
     {
       email: {
