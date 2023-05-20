@@ -1,15 +1,21 @@
 import express from 'express';
 import { Express, Response, Request, NextFunction } from 'express';
 import { HttpError } from 'http-errors';
-import Logger from './utils/logger';
+import { Logger } from './utils/winston';
+
+const logger = new Logger();
 
 const app: Express = express();
+
+app.use(logger.getRequestLogger());
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   return res
     .status(404)
     .json({ status: 'Error', message: ` ${req.path} not found` });
 });
+
+app.use(logger.getRequestErrorLogger());
 
 //Global exception handler
 
@@ -24,7 +30,8 @@ app.use(
     if (process.env.NODE_ENV === 'development') {
       errorMessage = { message, stack };
     }
-    Logger.error(message);
+    //logger.log().error(errorMessage);
+    logger.log.error(errorMessage);
     response.status(status).json({ status: 'Error', error: errorMessage });
   }
 );
