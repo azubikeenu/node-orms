@@ -30,7 +30,6 @@ app.use(
     if (process.env.NODE_ENV === 'development') {
       errorMessage = { message, stack };
     }
-    //logger.log().error(errorMessage);
     logger.log.error(errorMessage);
     response.status(status).json({ status: 'Error', error: errorMessage });
   }
