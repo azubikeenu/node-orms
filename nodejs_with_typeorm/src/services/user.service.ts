@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import { AppDataSource } from '../config/database';
+import { AppDataSource } from '../database';
 import { User } from '../entities/user.entity';
 import { ServerException } from '../exceptions/index';
 

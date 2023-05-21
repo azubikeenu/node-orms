@@ -18,14 +18,14 @@ export const AppDataSource = new DataSource({
   entities: [User],
 });
 
-class Database {
+class DBservice {
   public static emitter: EventEmitter = new EventEmitter();
   public static isConnected = false;
   public static logger = new Logger();
 
   public static async getConnection(callback = null, wait = false) {
-    Database.handleConnectionError();
-    return await Database.createConnection();
+    DBservice.handleConnectionError();
+    return await DBservice.createConnection();
   }
 
   static async createConnection() {
@@ -33,19 +33,19 @@ class Database {
       return await AppDataSource.initialize();
     } catch (error: any) {
       this.logger.log.error(error?.message);
-      Database.logger.log.info('database connection error...retrying');
-      Database.emitter.emit('DB_CONNECT_ERROR');
+      DBservice.logger.log.info('database connection error...retrying');
+      DBservice.emitter.emit('DB_CONNECT_ERROR');
     }
   }
 
   public static async handleConnectionError() {
-    Database.emitter.on('DB_CONNECT_ERROR', async () => {
-      Database.logger.log.info('database connection error...retrying');
+    DBservice.emitter.on('DB_CONNECT_ERROR', async () => {
+      DBservice.logger.log.info('database connection error...retrying');
       setTimeout(async () => {
-        await Database.createConnection();
+        await DBservice.createConnection();
       }, 3000);
     });
   }
 }
 
-export default Database;
+export default DBservice;
