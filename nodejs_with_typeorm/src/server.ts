@@ -8,11 +8,13 @@ const logger = new Logger();
 
 import app from './app';
 import config from 'config';
+import Database from './config/database';
 
 (async () => {
   try {
     const port = config.get<number>('port');
-
+    await Database.getConnection();
+    logger.log.info('Successfully connected to the database!!');
     app.listen(port, () => {
       logger.log.info(`App listening on port ${port}`);
     });
