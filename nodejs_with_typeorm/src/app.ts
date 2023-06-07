@@ -9,6 +9,8 @@ const logger = new Logger();
 
 const app: Express = express();
 
+app.use(express.json());
+
 app.use(logger.getRequestLogger());
 
 app.use('/api/v1', router);
@@ -17,6 +19,7 @@ app.use('/api/v1', router);
 app.use(notFoundMiddleware);
 
 app.use(logger.getRequestErrorLogger());
+
 //Global exception handler
 app.use(errorsMiddleware);
 

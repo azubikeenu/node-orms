@@ -12,6 +12,8 @@ import {
   BeforeUpdate,
 } from 'typeorm';
 
+export const privateFields = ['password', 'initialPassword'];
+
 @Entity()
 @Unique(['email'])
 export class User {

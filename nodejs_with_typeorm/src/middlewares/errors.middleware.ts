@@ -10,7 +10,7 @@ function errorsMiddleware(
   response: Response,
   next: NextFunction
 ) {
-  const { status = 500, message, stack } = error;
+  const { statusCode = 500, message, stack } = error;
   // store the error message in the locals
   response.locals.errorMessage = message;
 
@@ -20,7 +20,7 @@ function errorsMiddleware(
     errorMessage = { message, stack };
   }
   logger.log.error(errorMessage);
-  response.status(status).json({ status: 'Error', error: errorMessage });
+  response.status(statusCode).json({ success: false, error: errorMessage });
 }
 
 export default errorsMiddleware;
